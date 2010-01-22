@@ -1,5 +1,12 @@
 use inc::Module::Install;
 
+if ( $Module::Install::AUTHOR ) {
+    system( 'pod2text lib/Catalyst/Authentication/Credential/RemoteHTTP.pm > README' )
+        and die;
+}
+
+perl_version '5.008001';
+
 name     'Catalyst-Authentication-Credential-RemoteHTTP';
 all_from 'lib/Catalyst/Authentication/Credential/RemoteHTTP.pm';
 author   q{Nigel Metheringham <nigelm@cpan.org>};
