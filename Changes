@@ -1,5 +1,5 @@
 Revision history for Catalyst-Authentication-Credential-RemoteHTTP
 
-0.01    Date/time
-        First version, released on an unsuspecting world.
+0.01    Tue 26 Jan 2010
+        Initial version - functional but no tests
 

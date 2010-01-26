@@ -6,21 +6,157 @@ VERSION
     Version 0.01
 
 SYNOPSIS
-    Quick summary of what the module does.
+        use Catalyst qw/
+          Authentication
+          /;
 
-    Perhaps a little code snippet.
+        package MyApp::Controller::Auth;
 
-        use Catalyst::Authentication::Credential::RemoteHTTP;
+        sub login : Local {
+            my ( $self, $c ) = @_;
 
-        my $foo = Catalyst::Authentication::Credential::RemoteHTTP->new();
-        ...
+            $c->authenticate( { username => $c->req->param('username'),
+                                password => $c->req->param('password') });
+        }
 
-EXPORT
-    A list of functions that can be exported. You can delete this section if
-    you don't export anything, such as for a purely object-oriented module.
+DESCRIPTION
+    This authentication credential checker takes authentication information
+    (most often a username) and a password, and attempts to validate the
+    username and password provided against a remote http server - ie against
+    another web server.
 
-SUBROUTINES/METHODS
-  check_password
+    This is useful for environments where you want to have a single source
+    of authentication information, but are not able to conveniently use a
+    networked authentication mechanism such as LDAP.
+
+CONFIGURATION
+        # example
+        __PACKAGE__->config->{'Plugin::Authentication'} = 
+                    {  
+                        default_realm => 'members',
+                        realms => {
+                            members => {
+                                credential => {
+                                    class => 'RemoteHTTP',
+                                    url => 'http://intranet.company.com/authenticated.html',
+                                    password_field => 'password',
+                                    username_prefix => 'MYDOMAIN\\',
+                                    http_keep_alive => 1,                                
+                                    defer_find_user => 1,                                
+                                },    
+                                ...
+
+    class
+        The classname used for Credential. This is part of
+        Catalyst::Plugin::Authentication and is the method by which
+        Catalyst::Authentication::Credential::RemoteHTTP is loaded as the
+        credential validator. For this module to be used, this must be set
+        to 'RemoteHTTP'.
+
+    url The URL that is used to authenticate the user. The module attempts
+        to fetch this URL using a HEAD request (to prevent dragging a large
+        page across the network) with the credentials given. If this fails
+        then the authentication fails. If no URL is supplied in the config,
+        then an exception is thrown on startup.
+
+    username_field
+        The field in the authentication hash that contains the username.
+        This may vary, but is most likely 'username'. In fact, this is so
+        common that if this is left out of the config, it defaults to
+        'username'.
+
+    password_field
+        The field in the authentication hash that contains the password.
+        This may vary, but is most likely 'password'. In fact, this is so
+        common that if this is left out of the config, it defaults to
+        'password'.
+
+    username_prefix
+        This is an optional prefix to the username, which is added to the
+        username before it is used for authenticating to the remote http
+        server. It may be used (for example) to apply a domain to the
+        authenticated username.
+
+    username_suffix
+        This is an optional suffix to the username, which is added to the
+        username before it is used for authenticating to the remote http
+        server. It may be used (for example) to apply a domain to the
+        authenticated username.
+
+    http_keep_alive
+        If "http_keep_alive" is set then keep_alive is set on the
+        connections to the remote http server. This is required if you are
+        using NTLM authentication (since an additional encryption nonce is
+        passed in the http negotiation). It is optional, but normally
+        harmless, for other forms of authentication.
+
+    defer_find_user
+        Normally the associated user store is queried for user information
+        before the remote http authentication takes place.
+
+        However if, for example, you are using a
+        Catalyst::Authentication::Store::DBIx::Class store with the
+        "auto_create_user" option, then you can end up with invalid users
+        added to the store. If "defer_find_user" is set true then the remote
+        http authentication occurs before the user is queried against the
+        store, ensuring that any users passed to the store are known to be
+        valid to the remote http server.
+
+METHODS
+    There are no publicly exported routines in the RemoteHTTP module (or
+    indeed in most credential modules.) However, below is a description of
+    the routines required by Catalyst::Plugin::Authentication for all
+    credential modules.
+
+  new( $config, $app, $realm )
+    Instantiate a new RemoteHTTP object using the configuration hash
+    provided in $config. A reference to the application is provided as the
+    second argument.
+
+  authenticate( $authinfo, $c )
+    Try to log a user in, receives a hashref containing authentication
+    information as the first argument, and the current context as the
+    second.
+
+JUSTIFICATION
+    Why would you use this module rather than one of the similar ones?
+
+    This module gives a combination of authentication against a remote http
+    server, but maintains a local user store. This allows your
+    authentication to be delegated, but the authorization (for example
+    allocation and use of roles) to be determined by the local user store.
+
+    Nearly all the other alternatives require you to combine your
+    authentication and authorization databases.
+
+    Catalyst::Authentication::Credential::HTTP::Proxy has a similar basis,
+    but requires you to use HTTP basic authentication for the application,
+    which may not be appropriate.
+
+NTLM NOTES
+    There are a number of issues relating to NTLM authentication. In
+    particular the supporting modules can be rather picky. To make NTLM
+    authentication work you must have an installed copy of libwww-perl that
+    includes LWP::Authen::Ntlm (some linux distributions may drop this
+    component as it gives you additional dependancy requirements over the
+    basic LWP package).
+
+    Additionally you require Authen::NTLM of version 1.02 or later. There
+    are 2 different CPAN module distributions that provide this module - but
+    only one of them has the appropriate version number.
+
+    Finally, if you are using NTLM-1.02 then you need to apply the patch
+    described in RT entry 9521
+    <http://rt.cpan.org/Ticket/Display.html?id=9521>.
+
+    When using NTLM authenication the configuration option "http_keep_alive"
+    must be set true - otherwise the session to the remote server is not
+    maintained and the authentication nonce will be lost between sessions.
+
+    You may also need to set "username_prefix" or "username_suffix" to set
+    the correct domain for the authentication, unless the username as given
+    to your application includes the domain information.
+
 AUTHOR
     Nigel Metheringham, "<nigelm at cpan.org>"
 
@@ -36,6 +172,9 @@ SUPPORT
     You can find documentation for this module with the perldoc command.
 
         perldoc Catalyst::Authentication::Credential::RemoteHTTP
+
+    However, as you are reading this it is most likely that you are already
+    aware of the documentation.
 
     You can also look for information at:
 
@@ -60,6 +199,13 @@ SUPPORT
         teHTTP/>
 
 ACKNOWLEDGEMENTS
+    Daisuke Murase <typester@cpan.org> - original
+    Catalyst::Plugin::Authentication::Store::HTTP used as the base for a
+    previous version of this module.
+
+    The code framework was taken from
+    Catalyst::Authentication::Credential::Password
+
 LICENSE AND COPYRIGHT
     Copyright 2010 Nigel Metheringham.
 

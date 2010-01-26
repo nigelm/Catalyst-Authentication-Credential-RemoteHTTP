@@ -5,19 +5,25 @@ if ( $Module::Install::AUTHOR ) {
         and die;
 }
 
-perl_version '5.008001';
-
 name     'Catalyst-Authentication-Credential-RemoteHTTP';
 all_from 'lib/Catalyst/Authentication/Credential/RemoteHTTP.pm';
 author   q{Nigel Metheringham <nigelm@cpan.org>};
 license  'perl';
 
 requires 'Catalyst::Runtime';
-requires 'Catalyst::Authentication::Credential::Password';
+requires 'Class::Accessor::Fast';
 requires 'Class::Inspector';
 requires 'MRO::Compat';
 
 build_requires 'Test::More';
+build_requires 'FindBin';
+
+tests_recursive (qw|
+    t
+|);
+
+resources 'license'     => 'http://dev.perl.org/licenses/';
+resources 'repository'  => 'http://github.com/nigelm/Catalyst-Authentication-Credential-RemoteHTTP/';
 
 auto_install;
 
