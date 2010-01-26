@@ -239,6 +239,23 @@ Try to log a user in, receives a hashref containing authentication information
 as the first argument, and the current context as the second.
 
 
+=head1 JUSTIFICATION
+
+Why would you use this module rather than one of the similar ones?
+
+This module gives a combination of authentication against a remote
+http server, but maintains a local user store. This allows your
+authentication to be delegated, but the authorization (for example
+allocation and use of roles) to be determined by the local user
+store.
+
+Nearly all the other alternatives require you to combine your
+authentication and authorization databases.
+
+L<Catalyst::Authentication::Credential::HTTP::Proxy> has a similar
+basis, but requires you to use HTTP basic authentication for the
+application, which may not be appropriate.
+
 =head1 NTLM NOTES
 
 There are a number of issues relating to NTLM authentication.  In
