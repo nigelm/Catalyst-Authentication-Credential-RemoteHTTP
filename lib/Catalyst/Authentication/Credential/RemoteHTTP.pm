@@ -3,6 +3,7 @@ use base qw/Catalyst::Authentication::Credential::Password/;
 
 use warnings;
 use strict;
+use Catalyst::Authentication::Credential::RemoteHTTP::UserAgent;
 
 =head1 NAME
 
@@ -18,21 +19,38 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+    use Catalyst qw/
+      Authentication
+      /;
 
-Perhaps a little code snippet.
+    package MyApp::Controller::Auth;
 
-    use Catalyst::Authentication::Credential::RemoteHTTP;
+    sub login : Local {
+        my ( $self, $c ) = @_;
 
-    my $foo = Catalyst::Authentication::Credential::RemoteHTTP->new();
-    ...
+        $c->authenticate( { username => $c->req->param('username'),
+                            password => $c->req->param('password') });
+    }
+
+=head1 DESCRIPTION
+
+This authentication credential checker takes authentication
+information (most often a username) and a password, and attempts to
+validate the username and password provided against a remote http
+server - ie against another web server.
+
+This is useful for environments where you want to have a single
+source of authentication information, but are not able to
+conveniently use a networked authentication mechanism such as LDAP.
+
+=head1 CONFIGURATION
 
 =head1 EXPORT
 
 A list of functions that can be exported.  You can delete this section
 if you don't export anything, such as for a purely object-oriented module.
 
-=head1 SUBROUTINES/METHODS
+=head1 METHODS
 
 =head2 check_password
 
@@ -48,9 +66,12 @@ sub check_password {
       : $self->_config->{keep_alive} || 0;
 
     # add prefix/suffix to user data
+	# we have to use $authinfo->{username} as the obvious $user->id may
+	# be something like a db primary key
     my $auth_user = join( '',
         ( $self->_config->{user_prefix} || '' ),
-        $user->id, ( $self->_config->{user_suffix} || '' ) );
+        $authinfo->{username},
+        ( $self->_config->{user_suffix} || '' ) );
 
     # get the password
     my $password = $authinfo->{ $self->_config->{'password_field'} };
