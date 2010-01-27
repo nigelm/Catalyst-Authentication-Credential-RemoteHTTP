@@ -127,8 +127,8 @@ conveniently use a networked authentication mechanism such as LDAP.
 
 
     # example
-    __PACKAGE__->config->{'Plugin::Authentication'} = 
-                {  
+    __PACKAGE__->config->{'Plugin::Authentication'} =
+                {
                     default_realm => 'members',
                     realms => {
                         members => {
@@ -137,15 +137,15 @@ conveniently use a networked authentication mechanism such as LDAP.
                                 url => 'http://intranet.company.com/authenticated.html',
                                 password_field => 'password',
                                 username_prefix => 'MYDOMAIN\\',
-                                http_keep_alive => 1,                                
-                                defer_find_user => 1,                                
-                            },    
+                                http_keep_alive => 1,
+                                defer_find_user => 1,
+                            },
                             ...
 
 
-=over 4 
+=over 4
 
-=item class 
+=item class
 
 The classname used for Credential. This is part of
 L<Catalyst::Plugin::Authentication> and is the method by which
@@ -223,7 +223,7 @@ L<Catalyst::Plugin::Authentication> for all credential modules.
 
 Instantiate a new RemoteHTTP object using the configuration hash
 provided in $config. A reference to the application is provided as
-the second argument. 
+the second argument.
 
 =head2 authenticate( $authinfo, $c )
 
