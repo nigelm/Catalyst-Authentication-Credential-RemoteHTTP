@@ -178,23 +178,19 @@ SUPPORT
 
     You can also look for information at:
 
-    *   RT: CPAN's request tracker
-
+    * RT: CPAN's request tracker
         <http://rt.cpan.org/NoAuth/Bugs.html?Dist=Catalyst-Authentication-Cr
         edential-RemoteHTTP>
 
-    *   AnnoCPAN: Annotated CPAN documentation
-
+    * AnnoCPAN: Annotated CPAN documentation
         <http://annocpan.org/dist/Catalyst-Authentication-Credential-RemoteH
         TTP>
 
-    *   CPAN Ratings
-
+    * CPAN Ratings
         <http://cpanratings.perl.org/d/Catalyst-Authentication-Credential-Re
         moteHTTP>
 
-    *   Search CPAN
-
+    * Search CPAN
         <http://search.cpan.org/dist/Catalyst-Authentication-Credential-Remo
         teHTTP/>
 

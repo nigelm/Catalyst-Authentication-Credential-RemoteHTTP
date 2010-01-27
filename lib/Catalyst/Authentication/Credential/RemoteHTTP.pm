@@ -1,11 +1,10 @@
 package Catalyst::Authentication::Credential::RemoteHTTP;
-use base qw/Class::Accessor::Fast/;
-
+use Moose;
+use MooseX::Types::Moose qw/Object/;
 use 5.008;
-use warnings;
-use strict;
 use Catalyst::Exception ();
 use Catalyst::Authentication::Credential::RemoteHTTP::UserAgent;
+use namespace::autoclean;
 
 =head1 NAME
 
@@ -19,37 +18,26 @@ Version 0.02
 
 our $VERSION = '0.02';
 
-BEGIN {
-    __PACKAGE__->mk_accessors(qw/_config realm/);
-}
+has realm => ( isa => Object, is => 'ro', required => 1 );
 
-sub new {
+has [qw/http_keep_alive defer_find_user/] => ( is => 'ro', default => 0 );
+has username_field => ( is => 'ro', default => 'username' );
+has password_field => ( is => 'ro', default => 'password' );
+
+has url => ( is => 'ro', required => 1 );
+
+has [qw/ user_prefix user_suffix /] => ( is => 'ro', default => '' );
+
+sub BUILDARGS {
     my ( $class, $config, $app, $realm ) = @_;
-
-    my $self = { _config => $config };
-    bless $self, $class;
-
-    $self->realm($realm);
-
-    # preload the required configuration
-    $self->_config->{'username_field'}  ||= 'username';
-    $self->_config->{'password_field'}  ||= 'password';
-    $self->_config->{'http_keep_alive'} ||= 0;
-    $self->_config->{'defer_find_user'} ||= 0;
-
-    # make sure we have a URL to authenticate against
-    unless ( defined( $self->_config->{'url'} ) ) {
-        Catalyst::Exception->throw(
-            __PACKAGE__ . ' has no defined authentication url.' );
-    }
-    return $self;
+    $config->{realm} = $realm;
+    return $config;
 }
 
 sub authenticate {
     my ( $self, $c, $realm, $authinfo ) = @_;
 
-    my $config   = $self->_config;
-    my $username = $authinfo->{ $config->{username_field} };
+    my $username = $authinfo->{ $self->username_field };
     unless ( defined($username) ) {
         $c->log->debug("No username supplied")
           if $c->debug;
@@ -59,26 +47,26 @@ sub authenticate {
     ## routine, as some store modules use all data passed to them
     ## to find a matching user...
     my $userfindauthinfo = { %{$authinfo} };
-    delete( $userfindauthinfo->{ $config->{'password_field'} } );
+    delete( $userfindauthinfo->{ $self->password_field } );
 
     my $user_obj;
     $user_obj = $realm->find_user( $userfindauthinfo, $c )
-      unless ( $config->{'defer_find_user'} );
+      unless ( $self->defer_find_user );
 
-    if ( ref($user_obj) || $config->{'defer_find_user'} ) {
+    if ( ref($user_obj) || $self->defer_find_user ) {
         my $ua =
           Catalyst::Authentication::Credential::RemoteHTTP::UserAgent->new(
-            keep_alive => $config->{http_keep_alive} ? 1 : 0 );
+            keep_alive => $self->http_keep_alive ? 1 : 0 );
 
         # add prefix/suffix to user data to make auth_user, get password
         my $auth_user = sprintf( '%s%s%s',
-            ( $config->{user_prefix} || '' ),
-            $username, ( $config->{user_suffix} || '' ) );
-        my $password = $authinfo->{ $config->{'password_field'} };
+            $self->user_prefix, $username, $self->user_suffix
+        );
+        my $password = $authinfo->{ $self->password_field };
         $ua->set_credentials( $auth_user, $password );
 
         # do the request
-        my $res = $ua->head( $config->{url} );
+        my $res = $ua->head( $self->url );
 
         # did it succeed
         if ( $res->is_success ) {
@@ -98,7 +86,7 @@ sub authenticate {
 
     # get the user object now, if deferred before
     $user_obj = $realm->find_user( $userfindauthinfo, $c )
-      if ( $config->{'defer_find_user'} );
+      if ( $self->defer_find_user );
 
     # deal with no-such-user in store
     unless ( ref($user_obj) ) {
