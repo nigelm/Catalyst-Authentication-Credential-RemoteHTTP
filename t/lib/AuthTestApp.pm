@@ -6,9 +6,6 @@ use Catalyst qw/
   Authentication
   /;
 
-use Test::More;
-use Test::Exception;
-
 # this info needs to match that in TestWebServer
 our $members = {
     insecure => { password => '123456' },

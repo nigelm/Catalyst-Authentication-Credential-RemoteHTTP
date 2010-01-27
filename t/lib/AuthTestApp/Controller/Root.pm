@@ -4,9 +4,12 @@ use strict;
 
 use base qw/Catalyst::Controller/;
 
+use Test::More;
+use Test::Exception;
+
 __PACKAGE__->config(namespace => '');
 
-sub testnotworking : Local {
+sub testnotworking : Path('/testnotworking') {
     my ( $self, $c ) = @_;
 
     ok( !$c->user, "no user" );
@@ -27,7 +30,7 @@ sub testnotworking : Local {
     $c->res->body("ok");
 }
 
-sub testworking : Local {
+sub testworking : Path('/testworking') {
     my ( $self, $c ) = @_;
 
     ok( !$c->user, "no user" );

@@ -20,6 +20,7 @@ README
 t/00-load.t
 t/boilerplate.t
 t/lib/AuthTestApp.pm
+t/lib/AuthTestApp/Controller/Root.pm
 t/lib/TestWebServer.pm
 t/live.t
 t/manifest.t

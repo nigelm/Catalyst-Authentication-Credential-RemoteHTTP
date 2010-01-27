@@ -28,7 +28,7 @@ sub do_authenticate {
 
     if ( ( $ENV{HTTP_AUTHORIZATION} || '' ) =~ /^Basic (.*?)$/ ) {
         my ( $user, $pass ) = split /:/, ( MIME::Base64::decode($1) || ':' );
-        warn "user = $user, pass = $pass\n";
+        ## warn "user = $user, pass = $pass\n";
         if ( exists( $user_set->{$user} ) && ( $user_set->{$user} eq $pass ) ) {
             return $user;
         }
