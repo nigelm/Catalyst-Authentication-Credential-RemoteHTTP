@@ -32,8 +32,6 @@ sub new {
 
     # preload the required configuration
     $self->_config->{'username_field'}  ||= 'username';
-    $self->_config->{'username_prefix'} ||= '';
-    $self->_config->{'username_suffix'} ||= '';
     $self->_config->{'password_field'}  ||= 'password';
     $self->_config->{'http_keep_alive'} ||= 0;
     $self->_config->{'defer_find_user'} ||= 0;
@@ -49,7 +47,13 @@ sub new {
 sub authenticate {
     my ( $self, $c, $realm, $authinfo ) = @_;
 
-    my $config = $self->_config;
+    my $config   = $self->_config;
+    my $username = $authinfo->{ $config->{username_field} };
+    unless ( defined($username) ) {
+        $c->log->debug("No username supplied")
+          if $c->debug;
+        return;
+    }
     ## we remove the password_field before we pass it to the user
     ## routine, as some store modules use all data passed to them
     ## to find a matching user...
@@ -67,9 +71,8 @@ sub authenticate {
 
         # add prefix/suffix to user data to make auth_user, get password
         my $auth_user = sprintf( '%s%s%s',
-            $config->{user_prefix},
-            $authinfo->{ $config->{username_field} },
-            $config->{user_suffix} );
+            ( $config->{user_prefix} || '' ),
+            $username, ( $config->{user_suffix} || '' ) );
         my $password = $authinfo->{ $config->{'password_field'} };
         $ua->set_credentials( $auth_user, $password );
 
