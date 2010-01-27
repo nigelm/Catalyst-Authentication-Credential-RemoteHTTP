@@ -16,7 +16,9 @@ requires 'Class::Inspector';
 requires 'MRO::Compat';
 
 build_requires 'Test::More';
+build_requires 'Catalyst::Authentication::Store::Minimal';
 build_requires 'FindBin';
+build_requires 'HTTP::Server::Simple';
 
 tests_recursive (qw|
     t

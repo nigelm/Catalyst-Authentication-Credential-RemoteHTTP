@@ -1,6 +1,7 @@
 package Catalyst::Authentication::Credential::RemoteHTTP;
 use base qw/Class::Accessor::Fast/;
 
+use 5.008;
 use warnings;
 use strict;
 use Catalyst::Exception ();
@@ -12,11 +13,11 @@ Catalyst::Authentication::Credential::RemoteHTTP - Authenticate against remote H
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 BEGIN {
     __PACKAGE__->mk_accessors(qw/_config realm/);

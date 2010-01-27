@@ -12,3 +12,4 @@ pod2htm*.tmp
 Catalyst-Authentication-Credential-RemoteHTTP-*
 inc
 META.yml
+*.bak
