@@ -31,8 +31,8 @@ DESCRIPTION
 
 CONFIGURATION
         # example
-        __PACKAGE__->config->{'Plugin::Authentication'} = 
-                    {  
+        __PACKAGE__->config(
+            'Plugin::Authentication' => {
                         default_realm => 'members',
                         realms => {
                             members => {
@@ -41,10 +41,13 @@ CONFIGURATION
                                     url => 'http://intranet.company.com/authenticated.html',
                                     password_field => 'password',
                                     username_prefix => 'MYDOMAIN\\',
-                                    http_keep_alive => 1,                                
-                                    defer_find_user => 1,                                
-                                },    
+                                    http_keep_alive => 1,
+                                    defer_find_user => 1,
+                                },
                                 ...
+                        },
+            },
+        );
 
     class
         The classname used for Credential. This is part of
