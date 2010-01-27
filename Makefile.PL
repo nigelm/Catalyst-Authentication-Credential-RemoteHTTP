@@ -11,9 +11,9 @@ author   q{Nigel Metheringham <nigelm@cpan.org>};
 license  'perl';
 
 requires 'Catalyst::Runtime';
-requires 'Class::Accessor::Fast';
-requires 'Class::Inspector';
-requires 'MRO::Compat';
+requires 'Moose';
+requires 'MooseX::Types';
+requires 'namespace::autoclean';
 
 build_requires 'Test::More';
 build_requires 'Catalyst::Authentication::Store::Minimal';
