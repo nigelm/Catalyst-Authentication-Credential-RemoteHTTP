@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use base qw/LWP::UserAgent/;
 
-sub credentials {
+sub set_credentials {
     my ($self, $user, $pass) = @_;
     @{ $self->{credentials} } = ($user, $pass);
 }
@@ -23,7 +23,7 @@ A thin wrapper for L<LWP::UserAgent> to make basic auth simpler.
 
 =head1 METHODS
 
-=head2 credentials
+=head2 set_credentials
 
 now takes just a username and password
 

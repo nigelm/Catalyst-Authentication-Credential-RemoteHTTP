@@ -71,7 +71,7 @@ sub authenticate {
             $authinfo->{ $config->{username_field} },
             $config->{user_suffix} );
         my $password = $authinfo->{ $config->{'password_field'} };
-        $ua->credentials( $auth_user, $password );
+        $ua->set_credentials( $auth_user, $password );
 
         # do the request
         my $res = $ua->head( $config->{url} );
