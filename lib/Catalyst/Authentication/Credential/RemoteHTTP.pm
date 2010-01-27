@@ -127,8 +127,8 @@ conveniently use a networked authentication mechanism such as LDAP.
 
 
     # example
-    __PACKAGE__->config->{'Plugin::Authentication'} =
-                {
+    __PACKAGE__->config(
+        'Plugin::Authentication' => {
                     default_realm => 'members',
                     realms => {
                         members => {
@@ -141,7 +141,9 @@ conveniently use a networked authentication mechanism such as LDAP.
                                 defer_find_user => 1,
                             },
                             ...
-
+                    },
+        },
+    );
 
 =over 4
 
