@@ -1,4 +1,5 @@
 package Catalyst::Authentication::Credential::RemoteHTTP::UserAgent;
+
 use strict;
 use warnings;
 use base qw/LWP::UserAgent/;

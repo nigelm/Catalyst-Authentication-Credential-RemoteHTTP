@@ -1,5 +1,9 @@
 Revision history for Catalyst-Authentication-Credential-RemoteHTTP
 
+0.03    Thu 28 Jan 2010
+        Updated to current best practice (ie Moose) - t0m
+        Tweaks for kwalitee and release sanitation
+
 0.02    Wed 27 Jan 2010
         Tests added
         Intending this release to be sent to CPAN after checking

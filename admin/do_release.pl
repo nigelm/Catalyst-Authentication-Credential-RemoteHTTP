@@ -257,6 +257,20 @@ use POSIX qw(strftime);
 
 my $class = "Module::Release";
 
+sub make_vcs_tag {
+    no warnings 'uninitialized';
+
+    my ( $major, $minor ) =
+      $_[0]->remote_file =~
+      /(\d+) \. (\d+(?:_\d+)?) (?: \.tar\.gz | \.tgz | \.zip )? $/xg;
+
+    $_[0]->_warn(
+"Could not parse remote [$_[0]->{remote_file}] to get major and minor versions"
+    ) unless defined $major;
+
+    return "release/${major}.${minor}";
+}
+
 sub check_changes {
     my $release = shift;
 
@@ -448,7 +462,8 @@ else {
 if ( -M 'lib/Catalyst/Authentication/Credential/RemoteHTTP.pm' < -M 'README' ) {
     $release->_print("Updating README file\n");
     my $parser = Pod::Readme->new();
-    $parser->parse_from_file( 'lib/Catalyst/Authentication/Credential/RemoteHTTP.pm', 'README' );
+    $parser->parse_from_file(
+        'lib/Catalyst/Authentication/Credential/RemoteHTTP.pm', 'README' );
 }
 else {
     $release->_print("README file up to date\n");

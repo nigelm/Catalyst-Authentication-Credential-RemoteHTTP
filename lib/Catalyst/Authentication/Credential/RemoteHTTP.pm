@@ -1,7 +1,10 @@
 package Catalyst::Authentication::Credential::RemoteHTTP;
+
+use strict;
+use warnings;
 use Moose;
 use MooseX::Types::Moose qw/Object/;
-use 5.008;
+use 5.008005;
 use Catalyst::Exception ();
 use Catalyst::Authentication::Credential::RemoteHTTP::UserAgent;
 use namespace::autoclean;
@@ -12,11 +15,11 @@ Catalyst::Authentication::Credential::RemoteHTTP - Authenticate against remote H
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 has realm => ( isa => Object, is => 'ro', required => 1 );
 
@@ -59,9 +62,8 @@ sub authenticate {
             keep_alive => $self->http_keep_alive ? 1 : 0 );
 
         # add prefix/suffix to user data to make auth_user, get password
-        my $auth_user = sprintf( '%s%s%s',
-            $self->user_prefix, $username, $self->user_suffix
-        );
+        my $auth_user = sprintf( '%s%s%s', $self->user_prefix, $username,
+            $self->user_suffix );
         my $password = $authinfo->{ $self->password_field };
         $ua->set_credentials( $auth_user, $password );
 
@@ -333,6 +335,7 @@ for a previous version of this module.
 The code framework was taken from
 L<Catalyst::Authentication::Credential::Password>
 
+Tomas Doran (t0m) <t0m@state51.co.uk> - Fixups to best practice guidelines
 
 =head1 LICENSE AND COPYRIGHT
 

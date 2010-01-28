@@ -3,7 +3,7 @@ NAME
     remote HTTP server
 
 VERSION
-    Version 0.02
+    Version 0.03
 
 SYNOPSIS
         use Catalyst qw/
@@ -181,19 +181,23 @@ SUPPORT
 
     You can also look for information at:
 
-    * RT: CPAN's request tracker
+    *   RT: CPAN's request tracker
+
         <http://rt.cpan.org/NoAuth/Bugs.html?Dist=Catalyst-Authentication-Cr
         edential-RemoteHTTP>
 
-    * AnnoCPAN: Annotated CPAN documentation
+    *   AnnoCPAN: Annotated CPAN documentation
+
         <http://annocpan.org/dist/Catalyst-Authentication-Credential-RemoteH
         TTP>
 
-    * CPAN Ratings
+    *   CPAN Ratings
+
         <http://cpanratings.perl.org/d/Catalyst-Authentication-Credential-Re
         moteHTTP>
 
-    * Search CPAN
+    *   Search CPAN
+
         <http://search.cpan.org/dist/Catalyst-Authentication-Credential-Remo
         teHTTP/>
 
@@ -204,6 +208,9 @@ ACKNOWLEDGEMENTS
 
     The code framework was taken from
     Catalyst::Authentication::Credential::Password
+
+    Tomas Doran (t0m) <t0m@state51.co.uk> - Fixups to best practice
+    guidelines
 
 LICENSE AND COPYRIGHT
     Copyright 2010 Nigel Metheringham.
