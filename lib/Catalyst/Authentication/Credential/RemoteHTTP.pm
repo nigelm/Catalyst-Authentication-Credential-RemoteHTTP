@@ -1,5 +1,7 @@
 package Catalyst::Authentication::Credential::RemoteHTTP;
 
+# ABSTRACT: Authenticate against remote HTTP server
+
 use strict;
 use warnings;
 use Moose;
@@ -8,18 +10,6 @@ use 5.008005;
 use Catalyst::Exception ();
 use Catalyst::Authentication::Credential::RemoteHTTP::UserAgent;
 use namespace::autoclean;
-
-=head1 NAME
-
-Catalyst::Authentication::Credential::RemoteHTTP - Authenticate against remote HTTP server
-
-=head1 VERSION
-
-Version 0.03
-
-=cut
-
-our $VERSION = '0.03';
 
 has realm => ( isa => Object, is => 'ro', required => 1 );
 
@@ -279,53 +269,6 @@ to set the correct domain for the authentication, unless the
 username as given to your application includes the domain
 information.
 
-
-=head1 AUTHOR
-
-Nigel Metheringham, C<< <nigelm at cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to
-C<bug-catalyst-authentication-credential-remotehttp at
-rt.cpan.org>, or through the web interface at
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Catalyst-Authentication-Credential-RemoteHTTP>.
-I will be notified, and then you'll automatically be notified of
-progress on your bug as I make changes.
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Catalyst::Authentication::Credential::RemoteHTTP
-
-However, as you are reading this it is most likely that you are
-already aware of the documentation.
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Catalyst-Authentication-Credential-RemoteHTTP>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Catalyst-Authentication-Credential-RemoteHTTP>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Catalyst-Authentication-Credential-RemoteHTTP>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Catalyst-Authentication-Credential-RemoteHTTP/>
-
-=back
-
-
 =head1 ACKNOWLEDGEMENTS
 
 Daisuke Murase <typester@cpan.org> - original
@@ -336,17 +279,6 @@ The code framework was taken from
 L<Catalyst::Authentication::Credential::Password>
 
 Tomas Doran (t0m) <t0m@state51.co.uk> - Fixups to best practice guidelines
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2010 Nigel Metheringham.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
 
 =cut
 

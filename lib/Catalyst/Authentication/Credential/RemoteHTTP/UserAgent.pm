@@ -1,5 +1,7 @@
 package Catalyst::Authentication::Credential::RemoteHTTP::UserAgent;
 
+# ABSTRACT: Wrapper for LWP::UserAgent
+
 use strict;
 use warnings;
 use base qw/LWP::UserAgent/;
@@ -13,10 +15,6 @@ sub get_basic_credentials {
     my $self = shift;
     return @{ $self->{credentials} };
 }
-
-=head1 NAME
-
-Catalyst::Authentication::Credential::RemoteHTTP::UserAgent - Wrapper for LWP::UserAgent
 
 =head1 DESCRIPTION
 
@@ -32,19 +30,9 @@ now takes just a username and password
 
 Returns the set credentials, takes no options.
 
-=head1 AUTHOR
-
-Nigel Metheringham <nigelm@cpan.org> - integration into L<Catalyst::Authentication::Credential::RemoteHTTP>
+=head1 ACKNOWLEDGEMENTS
 
 Marcus Ramberg <mramberg@cpan.org - original code in L<Catalyst::Plugin::Authentication::Credential::HTTP::User>
-
-=head1 LICENSE
-
-This module is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
-The full text of the license can be found in the LICENSE file included
-with this module.
 
 =cut
 
