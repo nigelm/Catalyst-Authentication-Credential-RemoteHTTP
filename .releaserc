@@ -1,5 +1,0 @@
-cpan_user NIGELM
-passive_ftp 1
-# added because something is throwing spurious prereqs but
-# cannot isolate just what.  This stinks!
-skip_prereqs 1
