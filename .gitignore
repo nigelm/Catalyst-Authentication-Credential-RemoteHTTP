@@ -13,3 +13,4 @@ Catalyst-Authentication-Credential-RemoteHTTP-*
 inc
 META.yml
 *.bak
+.build
