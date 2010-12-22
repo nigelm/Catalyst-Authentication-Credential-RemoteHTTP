@@ -1,6 +1,8 @@
 Revision history for Catalyst-Authentication-Credential-RemoteHTTP
 
 {{$NEXT}}
+
+0.04      2010-12-22 16:22:12 Europe/London
     - Convert distribution to Dist::Zilla
     - Use IO::Socket::INET in tests to check port, avoiding smoker failures
 
