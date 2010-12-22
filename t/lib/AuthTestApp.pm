@@ -18,7 +18,7 @@ __PACKAGE__->config('Plugin::Authentication' => {
         members => {
             credential => {
                 class => 'RemoteHTTP',
-                url   => 'http://127.0.0.1:8080/stuff.html',
+                url   => 'http://127.0.0.1:10763/stuff.html',
             },
             store => {
                 class => 'Minimal',
