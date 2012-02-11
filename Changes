@@ -1,6 +1,8 @@
 Revision history for Catalyst-Authentication-Credential-RemoteHTTP
 
 {{$NEXT}}
+    - Distribution related tweaks
+    - Minor documentation fixes to make sure examples correct
 
 0.04      2010-12-22 16:22:12 Europe/London
     - Convert distribution to Dist::Zilla

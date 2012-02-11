@@ -26,7 +26,10 @@ has [qw/ user_prefix user_suffix /] => ( is => 'ro', default => '' );
 
 sub BUILDARGS {
     my ( $class, $config, $app, $realm ) = @_;
+
     $config->{realm} = $realm;
+    $config->{app}   = $app;
+    $config->{class} = $class;
     return $config;
 }
 
@@ -36,7 +39,7 @@ sub authenticate {
     my $username = $authinfo->{ $self->username_field };
     unless ( defined($username) ) {
         $c->log->debug("No username supplied")
-          if $c->debug;
+            if $c->debug;
         return;
     }
     ## we remove the password_field before we pass it to the user
@@ -47,16 +50,15 @@ sub authenticate {
 
     my $user_obj;
     $user_obj = $realm->find_user( $userfindauthinfo, $c )
-      unless ( $self->defer_find_user );
+        unless ( $self->defer_find_user );
 
     if ( ref($user_obj) || $self->defer_find_user ) {
         my $ua =
-          Catalyst::Authentication::Credential::RemoteHTTP::UserAgent->new(
+            Catalyst::Authentication::Credential::RemoteHTTP::UserAgent->new(
             keep_alive => $self->http_keep_alive ? 1 : 0 );
 
         # add prefix/suffix to user data to make auth_user, get password
-        my $auth_user = sprintf( '%s%s%s', $self->user_prefix, $username,
-            $self->user_suffix );
+        my $auth_user = sprintf( '%s%s%s', $self->user_prefix, $username, $self->user_suffix );
         my $password = $authinfo->{ $self->password_field };
         $ua->set_credentials( $auth_user, $password );
 
@@ -68,37 +70,42 @@ sub authenticate {
 
             # TODO: should we check here that it was actually authenticated?
             # this could be done by ensuring there is a request chain...
-            $c->log->debug(
-                "remote http auth succeeded for user " . $auth_user )
-              if $c->debug;
+            $c->log->debug( "remote http auth succeeded for user " . $auth_user )
+                if $c->debug;
         }
         else {
             $c->log->debug( "remote http auth FAILED for user " . $auth_user )
-              if $c->debug;
+                if $c->debug;
             return;
         }
     }
 
     # get the user object now, if deferred before
     $user_obj = $realm->find_user( $userfindauthinfo, $c )
-      if ( $self->defer_find_user );
+        if ( $self->defer_find_user );
 
     # deal with no-such-user in store
     unless ( ref($user_obj) ) {
         $c->log->debug("Unable to locate user matching user info provided")
-          if $c->debug;
+            if $c->debug;
         return;
     }
     return $user_obj;
 }
 
+=begin :prelude
+
+=for stopwords ACKNOWLEDGEMENTS Daisuke Fixups LDAP Murase NTLM classname http ie linux url validator
+
+=end :prelude
+
 =head1 SYNOPSIS
+
+    package MyApp::Controller::Auth;
 
     use Catalyst qw/
       Authentication
       /;
-
-    package MyApp::Controller::Auth;
 
     sub login : Local {
         my ( $self, $c ) = @_;
@@ -251,7 +258,7 @@ There are a number of issues relating to NTLM authentication.  In
 particular the supporting modules can be rather picky.  To make NTLM
 authentication work you must have an installed copy of libwww-perl
 that includes L<LWP::Authen::Ntlm> (some linux distributions may drop
-this component as it gives you additional dependancy requirements over
+this component as it gives you additional dependency requirements over
 the basic L<LWP> package).
 
 Additionally you require L<Authen::NTLM> of version 1.02 or later.
@@ -262,7 +269,7 @@ Finally, if you are using L<NTLM-1.02> then you need to apply the
 patch described in RT entry 9521
 L<http://rt.cpan.org/Ticket/Display.html?id=9521>.
 
-When using NTLM authenication the configuration option
+When using NTLM authentication the configuration option
 C<http_keep_alive> must be set true - otherwise the session to the
 remote server is not maintained and the authentication nonce will
 be lost between sessions.

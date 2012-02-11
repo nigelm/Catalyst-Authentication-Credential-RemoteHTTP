@@ -19,9 +19,15 @@ sub get_basic_credentials {
     return @{ $self->{credentials} };
 }
 
+=begin :prelude
+
+=for stopwords ACKNOWLEDGEMENTS Marcus Ramberg
+
+=end :prelude
+
 =head1 DESCRIPTION
 
-A thin wrapper for L<LWP::UserAgent> to make basic auth simpler.
+A thin wrapper for L<LWP::UserAgent> to make basic authentication simpler.
 
 =head1 METHODS
 
