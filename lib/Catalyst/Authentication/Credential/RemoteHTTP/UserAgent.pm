@@ -6,6 +6,9 @@ use strict;
 use warnings;
 use base qw/LWP::UserAgent/;
 
+# VERSION
+# AUTHORITY
+
 sub set_credentials {
     my ($self, $user, $pass) = @_;
     @{ $self->{credentials} } = ($user, $pass);

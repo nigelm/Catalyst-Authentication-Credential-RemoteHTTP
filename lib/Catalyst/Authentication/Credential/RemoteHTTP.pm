@@ -11,6 +11,9 @@ use Catalyst::Exception ();
 use Catalyst::Authentication::Credential::RemoteHTTP::UserAgent;
 use namespace::autoclean;
 
+# VERSION
+# AUTHORITY
+
 has realm => ( isa => Object, is => 'ro', required => 1 );
 
 has [qw/http_keep_alive defer_find_user/] => ( is => 'ro', default => 0 );
