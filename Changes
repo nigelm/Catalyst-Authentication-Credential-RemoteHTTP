@@ -1,7 +1,5 @@
 Revision history for Catalyst-Authentication-Credential-RemoteHTTP
 
-{{$NEXT}}
-
 0.05      2012-02-11 22:18:34 Europe/London
     - Distribution related tweaks
     - Minor documentation fixes to make sure examples correct
