@@ -28,8 +28,8 @@ SKIP: {
     my $remote = IO::Socket::INET->new(
         Listen =>5,
         Proto    => 'tcp',
-        PeerAddr => '127.0.0.1',
-        PeerPort => $port,
+        LocalAddr => '127.0.0.1',
+        LocalPort => $port,
     );
     my $check = $remote ? 1 : 0;
     close $remote if ($check);
